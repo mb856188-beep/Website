@@ -257,6 +257,18 @@ textarea.error {
   animation: fadeIn 0.3s ease;
 }
 
+/* Security: Honeypot field - visually hidden but accessible to bots */
+.honey-pot-field {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
 /* Scroll to Top Button */
 .scroll-to-top {
   position: fixed;
@@ -460,7 +472,7 @@ body::before {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 80%;
-  opacity: 0.09; /* adjust faintness (0.05-0.15 works well) */
+  opacity: 0.1; /* adjust faintness (0.05-0.15 works well) */
   z-index: -1;
   pointer-events: none;
 }

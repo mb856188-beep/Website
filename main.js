@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add smooth scrolling for anchor links
   initSmoothScrolling();
   
-  // Add form validation
+  // Add form validation and secure submission
   initFormValidation();
   
   // Add scroll-to-top functionality
@@ -415,16 +415,29 @@ function initSmoothScrolling() {
   });
 }
 
-// Form validation
+// Form validation and security
 function initFormValidation() {
   const form = document.querySelector('form');
   if (!form) return;
   
   form.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent default submission
+    
+    // 1. Bot Protection (Honeypot)
+    const honeypot = document.getElementById('website');
+    if (honeypot && honeypot.value) {
+        console.log('Spam detected');
+        return; // Silently fail if honeypot is filled
+    }
+
     let isValid = true;
     const emailInput = form.querySelector('input[type="email"]');
-    const nameInput = form.querySelector('input[name="name"]');
+    const nameInput = form.querySelector('input[name="Name"]');
+    const dateInput = form.querySelector('input[name="Event date"]');
+    const venueInput = form.querySelector('input[name="Venue"]');
+    const detailsInput = form.querySelector('textarea[name="Details"]');
     
+    // 2. Client-side Validation
     // Validate email
     if (emailInput && emailInput.value) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -445,19 +458,56 @@ function initFormValidation() {
     }
     
     if (!isValid) {
-      e.preventDefault();
-      
       // Show error message
-      const errorMsg = document.createElement('div');
-      errorMsg.className = 'form-error';
-      errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please check the highlighted fields above.';
-      errorMsg.setAttribute('role', 'alert');
-      errorMsg.setAttribute('aria-live', 'assertive');
-      
-      const submitBtn = form.querySelector('button[type="submit"]');
-      if (submitBtn) {
-        submitBtn.insertAdjacentElement('beforebegin', errorMsg);
+      const existingError = form.querySelector('.form-error');
+      if(!existingError) {
+          const errorMsg = document.createElement('div');
+          errorMsg.className = 'form-error';
+          errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please check the highlighted fields above.';
+          errorMsg.setAttribute('role', 'alert');
+          errorMsg.setAttribute('aria-live', 'assertive');
+          
+          const submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.insertAdjacentElement('beforebegin', errorMsg);
+          }
       }
+    } else {
+        // Remove error message if exists
+        const existingError = form.querySelector('.form-error');
+        if(existingError) existingError.remove();
+
+        // 3. Sanitization
+        const sanitize = (str) => {
+            if(!str) return '';
+            const temp = document.createElement('div');
+            temp.textContent = str;
+            return temp.innerHTML;
+        };
+
+        const name = sanitize(nameInput.value);
+        const email = sanitize(emailInput.value);
+        const date = sanitize(dateInput.value);
+        const venue = sanitize(venueInput.value);
+        const details = sanitize(detailsInput.value);
+
+        // 4. Secure Mailto Construction
+        // We construct the URL dynamically so it's not in the HTML source
+        const user = 'whistlersmother1';
+        const domain = 'hotmail.com';
+        const recipient = `${user}@${domain}`;
+        
+        const subject = encodeURIComponent(`Enquiry from ${name} - ${date || 'No Date'}`);
+        const body = encodeURIComponent(
+            `Name: ${name}\n` +
+            `Email: ${email}\n` +
+            `Date: ${date}\n` +
+            `Venue: ${venue}\n\n` +
+            `Details:\n${details}`
+        );
+
+        // Open email client
+        window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
     }
   });
   
@@ -478,7 +528,7 @@ function validateField(input) {
     }
   }
   
-  if (input.name === 'name' && !input.value.trim()) {
+  if (input.name === 'Name' && !input.value.trim()) {
     showFieldError(input, 'Please enter your name');
     return false;
   }

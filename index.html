@@ -1049,7 +1049,14 @@
 
       <div class="enquiry-layout">
         <div>
-          <form id="enquiry-form" action="mailto:whistlersmother1@hotmail.com" method="post" enctype="text/plain">
+          <!-- Updated Secure Form with Honeypot -->
+          <form id="enquiry-form" novalidate>
+            <!-- Honeypot field - hidden from humans but seen by bots -->
+            <div class="field-group honey-pot-field" aria-hidden="true">
+               <label for="website">Website</label>
+               <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
             <div class="field-group">
               <div>
                 <label for="name"><i class="fas fa-user "></i> Your name</label>
@@ -1088,7 +1095,7 @@
 
           <p style="font-size: 14px; color: #777777; margin-top: 8px;">
             Prefer email? Contact directly at
-            <a href="mailto:whistlersmother1@hotmail.com"><i class="fas fa-envelope"></i> whistlersmother1@hotmail.com</a>
+            <a href="#" id="contact-email"><i class="fas fa-envelope"></i> [click to show email]</a>
           </p>
         </div>
 
@@ -1101,7 +1108,7 @@
         <a href="https://www.facebook.com/share/1BgRWr6Kbd/" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="mailto:whistlersmother1@hotmail.com">
+        <a href="#" class="footer-email-link">
           <i class="fas fa-envelope"></i>
         </a>
       </div>
@@ -1122,7 +1129,22 @@
   <!-- Keep the year update script -->
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+    
+    // Obfuscate email in footer
+    const user = 'whistlersmother1';
+    const domain = 'hotmail.com';
+    const emailLink = document.querySelector('.footer-email-link');
+    if(emailLink) {
+        emailLink.href = 'mailto:' + user + '@' + domain;
+    }
+    const contactLink = document.getElementById('contact-email');
+    if(contactLink) {
+        contactLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'mailto:' + user + '@' + domain;
+        });
+        contactLink.innerHTML = '<i class="fas fa-envelope"></i> ' + user + '@' + domain;
+    }
   </script>
 </body>
 </html>
-
