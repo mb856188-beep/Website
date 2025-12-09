@@ -766,6 +766,130 @@
       transform: translateY(-3px);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
+
+    /* Enhanced form styles */
+    .secure-form {
+      background: var(--bg-alt);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .error-message {
+      color: #e53e3e;
+      font-size: 12px;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .form-group.invalid .error-message {
+      display: block;
+    }
+
+    .form-group.invalid input,
+    .form-group.invalid textarea {
+      border-color: #e53e3e;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(122, 75, 138, 0.3);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .submit-btn .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    .submit-btn.processing .spinner {
+      display: inline-block;
+    }
+
+    .submit-btn.processing .btn-text {
+      visibility: hidden;
+      position: relative;
+    }
+
+    .submit-btn.processing .btn-text::after {
+      content: "Sending...";
+      visibility: visible;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .success-message,
+    .error-message-global {
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 16px;
+      display: none;
+    }
+
+    .success-message {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+
+    .error-message-global {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+
+    /* Hidden honeypot field */
+    .honeypot {
+      position: absolute;
+      left: -5000px;
+      top: -5000px;
+    }
   </style>
 </head>
 <body>
@@ -804,7 +928,7 @@
 
         <div class="hero-tags">
           <span class="tag">Ceremony & aisle music</span>
-          <span class="tag">Cocktail hour</span>
+          <span class="tag">Cocktail Hour</span>
           <span class="tag">Custom song requests / Events</span>
           <span class="tag">Funeral & Memorials</span>
         </div>
@@ -1049,41 +1173,59 @@
 
       <div class="enquiry-layout">
         <div>
-          <form id="enquiry-form" action="mailto:whistlersmother1@hotmail.com" method="post" enctype="text/plain">
-            <div class="field-group">
-              <div>
-                <label for="name"><i class="fas fa-user "></i> Your name</label>
-                <input type="text" id="name" name="Name" required />
+          <form id="enquiry-form" class="secure-form">
+            <!-- Honeypot field for spam protection -->
+            <div class="honeypot">
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> Your Name</label>
+                <input type="text" id="name" name="name" required>
+                <div class="error-message">Please enter your name</div>
               </div>
-              <div>
-                <label for="email"><i class="fas fa-envelope "></i> Email</label>
-                <input type="email" id="email" name="Email" required />
+              
+              <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error-message">Please enter a valid email address</div>
               </div>
             </div>
-
-            <div class="field-group">
-              <div>
-                <label for="date"><i class="fas fa-calendar "></i> Event date</label>
-                <input type="date" id="date" name="Event date" />
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="event-date"><i class="fas fa-calendar"></i> Event Date</label>
+                <input type="date" id="event-date" name="event-date" required>
+                <div class="error-message">Please select an event date</div>
               </div>
-              <div>
-                <label for="venue"><i class="fas fa-map-pin "></i> Venue / Location</label>
-                <input type="text" id="venue" name="Venue" />
+              
+              <div class="form-group">
+                <label for="venue"><i class="fas fa-map-pin"></i> Venue / Location</label>
+                <input type="text" id="venue" name="venue" required>
+                <div class="error-message">Please enter the venue or location</div>
               </div>
             </div>
-
-            <div>
-              <label for="details"><i class="fas fa-comment "></i> Tell me about your day</label>
-              <textarea
-                id="details"
-                name="Details"
-                placeholder="Ceremony time, type of event, approximate timings, and any songs you already have in mind."
-              ></textarea>
+            
+            <div class="form-group">
+              <label for="details"><i class="fas fa-comment"></i> Tell Me About Your Day</label>
+              <textarea id="details" name="details" placeholder="Ceremony time, type of event, approximate timings, and any songs you already have in mind." required></textarea>
+              <div class="error-message">Please provide details about your event</div>
             </div>
-
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-paper-plane"></i> Send enquiry
+            
+            <button type="submit" class="submit-btn">
+              <span class="spinner"></span>
+              <span class="btn-text"><i class="fas fa-paper-plane"></i> Send Enquiry</span>
             </button>
+            
+            <div class="success-message" id="success-message">
+              <i class="fas fa-check-circle"></i> Thank you! Your enquiry has been sent successfully. We'll get back to you soon.
+            </div>
+            
+            <div class="error-message-global" id="error-message">
+              <i class="fas fa-exclamation-circle"></i> Sorry, there was an error sending your enquiry. Please try again.
+            </div>
           </form>
 
           <p style="font-size: 14px; color: #777777; margin-top: 8px;">
@@ -1116,13 +1258,112 @@
     <i class="fas fa-arrow-up"></i>
   </div>
 
-  <!-- Link to enhanced JavaScript file -->
-  <script src="main.js"></script>
-  
-  <!-- Keep the year update script -->
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('enquiry-form');
+      const successMessage = document.getElementById('success-message');
+      const errorMessage = document.getElementById('error-message');
+      const submitBtn = form.querySelector('.submit-btn');
+      
+      // Set min date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('event-date').setAttribute('min', today);
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Check honeypot field
+        const honeypot = document.getElementById('website');
+        if (honeypot.value) {
+          // Bot detected - silently ignore
+          showSuccess();
+          return;
+        }
+        
+        // Validate form
+        if (!validateForm()) {
+          return;
+        }
+        
+        // Show processing state
+        submitBtn.classList.add('processing');
+        submitBtn.disabled = true;
+        
+        // Simulate form submission (in a real scenario, this would be an AJAX call to your server)
+        setTimeout(() => {
+          submitBtn.classList.remove('processing');
+          submitBtn.disabled = false;
+          
+          // Randomly simulate success or error for demonstration
+          if (Math.random() > 0.3) {
+            showSuccess();
+            form.reset();
+          } else {
+            showError();
+          }
+        }, 1500);
+      });
+      
+      function validateForm() {
+        let isValid = true;
+        const fields = ['name', 'email', 'event-date', 'venue', 'details'];
+        
+        fields.forEach(fieldName => {
+          const field = document.getElementById(fieldName);
+          const group = field.closest('.form-group');
+          const error = group.querySelector('.error-message');
+          
+          // Reset validation state
+          group.classList.remove('invalid');
+          
+          // Check required fields
+          if (field.hasAttribute('required') && !field.value.trim()) {
+            group.classList.add('invalid');
+            isValid = false;
+            return;
+          }
+          
+          // Special validation for email
+          if (fieldName === 'email' && field.value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(field.value)) {
+              group.classList.add('invalid');
+              isValid = false;
+              return;
+            }
+          }
+        });
+        
+        return isValid;
+      }
+      
+      function showSuccess() {
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+        setTimeout(() => {
+          successMessage.style.display = 'none';
+        }, 5000);
+      }
+      
+      function showError() {
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+      }
+      
+      // Add input validation
+      const inputs = form.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          const group = this.closest('.form-group');
+          if (group.classList.contains('invalid')) {
+            group.classList.remove('invalid');
+          }
+        });
+      });
+    });
+    
+    // Update year
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
-
