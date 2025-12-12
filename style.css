@@ -471,7 +471,7 @@ body::before {
   background-image: url('Leeza-008.png');
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: 80%;
+  background-size: cover;
   opacity: 0.1; /* adjust faintness (0.05-0.15 works well) */
   z-index: -1;
   pointer-events: none;
