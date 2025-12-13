@@ -476,3 +476,27 @@ body::before {
   z-index: -1;
   pointer-events: none;
 }
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(122, 75, 138, 0.2);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* preserves logo proportions */
+  display: block;
+}
+
+.brand-mark:hover {
+  transform: scale(1.05);
+}
+
