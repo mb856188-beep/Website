@@ -1,0 +1,131 @@
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Use vh instead of 100% */
+  background-image: url('Leeza-014.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  z-index: -1;
+  pointer-events: none; /* Prevent interaction */
+}
+
+.background-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+/* Remove the z-index on all children as it might cause stacking issues */
+/* body > *:not(.background-container) {
+  position: relative;
+  z-index: 1;
+} */
+
+/* Fix the large empty space */
+.about-hero {
+    padding-top: 80px; /* Further reduced to account for navbar */
+    padding-bottom: 4rem;
+    min-height: auto; /* Remove min-height constraint */
+    display: flex;
+    align-items: center;
+}
+
+.about-hero .container {
+    width: 100%;
+    margin-top: 0; /* Ensure no margin */
+}
+
+/* Ensure navbar is properly positioned */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    height: 80px;
+}
+
+#booking-calendar {
+  max-width: 900px;
+  margin: 60px auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+#booking-calendar h2 {
+  font-size: 2.5em;
+  font-weight: 300;
+  margin-bottom: 15px;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+.booking-intro {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.calendar-container {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  margin: 0 auto 30px;
+  max-width: 800px;
+}
+
+.booking-iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 4px;
+}
+
+.booking-note {
+  font-size: 0.95em;
+  color: #888;
+  font-style: italic;
+}
+
+.booking-note a {
+  color: #d4a574; /* Soft gold accent to match elegant theme */
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.booking-note a:hover {
+  border-bottom-color: #d4a574;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  #booking-calendar {
+    padding: 30px 15px;
+  }
+  
+  #booking-calendar h2 {
+    font-size: 2em;
+  }
+  
+  .calendar-container {
+    padding: 15px;
+  }
+  
+  .booking-iframe {
+    height: 600px;
+  }
+}
